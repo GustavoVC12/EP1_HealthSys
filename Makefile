@@ -1,16 +1,25 @@
-all: main
+# Nome do executável final
+EXEC = healthsys
 
-CC = clang
-override CFLAGS += -g -Wno-everything -pthread -lm
+# Compilador e flags
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99 -g -Wno-unused-result
 
+# Arquivos-fonte (.c) e cabeçalhos (.h)
 SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
 HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
 
-main: $(SRCS) $(HEADERS)
+# Regra principal
+all: $(EXEC)
+
+# Compilação
+$(EXEC): $(SRCS) $(HEADERS)
 	$(CC) $(CFLAGS) $(SRCS) -o "$@"
 
-main-debug: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) -O0 $(SRCS) -o "$@"
+# Debug mode opcional
+debug: 
+	$(CC) $(CFLAGS) -O0 $(SRCS) -o $(EXEC)
 
+# Limpeza
 clean:
-	rm -f main main-debug
+	rm -f $(EXEC)
