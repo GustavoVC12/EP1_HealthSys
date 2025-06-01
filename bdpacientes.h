@@ -54,4 +54,6 @@ void confirma(); // aguarda o sinal do usuário para prosseguir
 
 void clearConsole(); // limpa o console
 
+void finalizar(BDPaciente *bd); // libera a memória alocada para o banco
+
 #endif
