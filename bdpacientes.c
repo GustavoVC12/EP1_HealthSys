@@ -3,10 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define INICIAL_CAPACIDADE 10
+
 //////////////////////////////////// ESTRUTURAS ////////////////////////////////////
 BDPaciente bd_criarBanco() {
     BDPaciente bd;
+    bd.capacidade = INICIAL_CAPACIDADE;
     bd.total = 0;
+    bd.pacientes = malloc(sizeof(Paciente) * bd.capacidade);
+    if (bd.pacientes == NULL) {
+        printf("Erro ao alocar memória.\n");
+        exit(1);
+    }
     return bd;
 }
 
@@ -24,7 +32,7 @@ Paciente bd_criarPaciente(int pId, const char *pCpf, const char *pNome, int pIda
 void bd_carregar_csv(BDPaciente *bd) {
     FILE *arquivo = fopen("bd_pacientes.csv", "r");
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.");
+        printf("Erro ao abrir o arquivo.\n");
         exit(1);
     }
 
@@ -54,12 +62,18 @@ void bd_carregar_csv(BDPaciente *bd) {
         strcpy(data, token);
 
         Paciente p = bd_criarPaciente(id, cpf, nome, idade, data);
-        if (bd->total < MAX_PACIENTES) {
-            bd->pacientes[bd->total++] = p;
-        } else {
-            printf("Número máximo de pacientes atingido.");
-            break;
+
+        // Realoca se necessário
+        if (bd->total >= bd->capacidade) {
+            bd->capacidade *= 2;
+            bd->pacientes = realloc(bd->pacientes, sizeof(Paciente) * bd->capacidade);
+            if (bd->pacientes == NULL) {
+                printf("Erro ao realocar memória.\n");
+                exit(1);
+            }
         }
+
+        bd->pacientes[bd->total++] = p;
     }
 
     fclose(arquivo);
@@ -89,18 +103,17 @@ int* bd_buscaCPF(const BDPaciente *bd, const char *prefixo, int *total) {
 }
 
 void bd_busca(const BDPaciente *bd) {
-    int metodo;
+    int metodo; // opção escolhida
     while (1) {
         clearConsole();
         printFrame();
-        char prefixo[100];
 
         printf("Escolha o modo de consulta:\n");
         printf("1 - Por nome\n");
         printf("2 - Por CPF\n");
         printf("3 - Retornar ao menu principal\n");
         printf(">>");
-        (void)scanf("%d", &metodo);
+        (void)scanf(" %d", &metodo);
 
         if (metodo == 3) {
             printf("Busca cancelada.\n");
@@ -114,14 +127,17 @@ void bd_busca(const BDPaciente *bd) {
         }
 
         printf("Digite o prefixo a ser buscado: ");
-        (void)scanf(" %[^\n]", prefixo);
 
         int total = 0;
         int *resultados = NULL;
 
         if (metodo == 1) {
+            char prefixo[100]; // tamanho máximo do nome
+            (void)scanf(" %[^\n]", prefixo);
             resultados = bd_buscaNome(bd, prefixo, &total);
-        } else if (metodo == 2) {
+        } else {
+            char prefixo[15]; // tamanho máximo do cpf
+            (void)scanf(" %[^\n]", prefixo);
             resultados = bd_buscaCPF(bd, prefixo, &total);
         }
 
@@ -138,15 +154,13 @@ void bd_busca(const BDPaciente *bd) {
             }
         }
 
-        free(resultados); // libera o vetor alocado dinamicamente
+        free(resultados);
 
         char continuar;
         printf("\nFazer outra busca? [Y/N]");
         printf("\n>>");
         (void)scanf(" %c", &continuar);
-        if (continuar != 'Y' && continuar != 'y') {
-            break;
-        }
+        if (continuar != 'Y' && continuar != 'y') break;
     }
 }
 
@@ -171,7 +185,7 @@ void bd_imprimir_lista(const BDPaciente *bd) {
 
 //////////////////////////////////// UTILIDADES ////////////////////////////////////
 void printFrame() {
-    printf("====================================================================\n");
+    printf("\n====================================================================\n");
 }
 
 void confirma() {
@@ -182,4 +196,9 @@ void confirma() {
 
 void clearConsole() {
     printf("\n\n\n");
+}
+
+void finalizar(BDPaciente *bd){
+    free(bd->pacientes);
+    printf("Memória limpa. Código encerrado.");
 }
