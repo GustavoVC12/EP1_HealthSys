@@ -31,13 +31,15 @@ int main(void) {
         break;
       case 'Q':
       case 'q':
+        printf("Encerrando programa...\n"); // sair
+
         clearConsole();
-        printf("Programa encerrado.\n"); // sair
+        finalizar(&bd);
         return 0;
       default:
-        printf("Opção inválida. Tente novamente"); // valor incorreto inserido
+        printf("Opção inválida. Tente novamente."); // valor incorreto inserido
+        clearConsole();
     }
   }
-  
   return 0;
 }
