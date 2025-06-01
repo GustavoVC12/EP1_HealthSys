@@ -3,7 +3,7 @@
 
 int main(void) {
   BDPaciente bd = bd_criarBanco(); // inicializa banco
-  bd_carregar_csv(&bd);           // carrega pacientes do CSV
+  bd_carregar_csv(&bd); // carrega pacientes do CSV
 
   // menu
   char opcao;
@@ -24,7 +24,7 @@ int main(void) {
         bd_busca(&bd);
         clearConsole();
         break;
-      } // chaves para poder declara o int
+      }
       case '5': // imprimir lista de pacientes
         bd_imprimir_lista(&bd);
         clearConsole();

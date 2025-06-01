@@ -1,7 +1,6 @@
 # EP1 - Sistema de Clínica (HealthSys)
 
-## Como compilar e executar
+Funcionamento do programa
 
-```bash
-make
-./healthsys
+## Main:
+Interface simples que utiliza input do usuário para determinar a tarefa a ser realizada.

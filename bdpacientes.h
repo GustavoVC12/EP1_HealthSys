@@ -33,10 +33,10 @@ void bd_carregar_csv(BDPaciente *bd); // carrega os dados do arquivo para o banc
 void bd_busca(const BDPaciente *bd); // coleta parâmetros pra busca do paciente e chama a busca adequada
 
 // busca e retornar todas as ocorrências de um prefixo de nome
-int bd_buscaNome(const BDPaciente *bd, const char *prefixo, int resultados[]);
+int *bd_buscaNome(const BDPaciente *bd, const char *prefixo, int resultados[]);
 
 // busca e retornar todas as ocorrências de um prefixo de CPF
-int bd_buscaCPF(const BDPaciente *bd, const char *prefixo, int resultados[]);
+int *bd_buscaCPF(const BDPaciente *bd, const char *prefixo, int resultados[]);
 
 
 
