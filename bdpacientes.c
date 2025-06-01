@@ -11,14 +11,13 @@
 //////////////////////////////////// ESTRUTURAS ////////////////////////////////////
 BDPaciente bd_criarBanco(){ // cria e retorna o banco de dados
     BDPaciente bd;
-    bd.pacientes = malloc(sizeof(Paciente) * bd.capacidade); // aloca memória para o paciente
+    bd.capacidade = INICIAL_CAPACIDADE;
+    bd.total = 0;
+    bd.pacientes = malloc(sizeof(Paciente) * bd.capacidade);
     if(bd.pacientes == NULL){ // verifica se o vetor foi criado
         printf("Erro ao alocar memória.\n");
         exit(1);
     }
-
-    bd.total = 0; // número atual de pacientes
-    bd.capacidade = INICIAL_CAPACIDADE; // capacidade inicial
     return bd;
 }
 
