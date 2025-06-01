@@ -1,25 +1,25 @@
-# Nome do executável final
+# Nome do executável
 EXEC = healthsys
 
 # Compilador e flags
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -g -Wno-unused-result
 
-# Arquivos-fonte (.c) e cabeçalhos (.h)
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
-HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
+# Arquivos-fonte e cabeçalhos
+SRCS = main.c bdpacientes.c
+HEADERS = bdpacientes.h
 
-# Regra principal
+# Regra padrão
 all: $(EXEC)
 
-# Compilação
+# Como gerar o executável
 $(EXEC): $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) $(SRCS) -o "$@"
+	$(CC) $(CFLAGS) $(SRCS) -o $(EXEC)
 
-# Debug mode opcional
-debug: 
+# Modo debug (sem otimizações)
+debug:
 	$(CC) $(CFLAGS) -O0 $(SRCS) -o $(EXEC)
 
-# Limpeza
+# Limpeza dos arquivos gerados
 clean:
 	rm -f $(EXEC)
