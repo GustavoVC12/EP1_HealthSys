@@ -17,6 +17,7 @@ make           # Compila o projeto
 make clean     # Remove o executável
 
 
+
 ### Organização do Projeto:
 | Arquivo            | Descrição                                                  |
 | ------------------ | ---------------------------------------------------------- |
@@ -26,28 +27,28 @@ make clean     # Remove o executável
 | `bd_pacientes.csv` | Base de dados dos pacientes (entrada do sistema)           |
 | `Makefile`         | Script de automação da compilação                          |
 
-
 ### Principais TADs e estruturas
-- Paciente - representa um paciente individual com os seguintes campos:
-  - id: inteiro
-  - cpf: string (formato XXX.XXX.XXX-XX)
-  - nome: string
-  - idade: inteiro
-  - data_cadastro: string (formato AAAA-MM-DD)
-- BDPaciente - representa um banco de pacientes com os seguintes campos:
-  - um vetor estático de pacientes (MAX_PACIENTES = 10);
-  - um campo total que armazena a quantidade atual de pacientes carregados.
+- **Paciente** - representa um paciente individual com os seguintes campos:
+  - `id`: inteiro
+  - `cpf`: string (formato XXX.XXX.XXX-XX)
+  - `nome`: string
+  - `idade`: inteiro
+  - `data_cadastro`: string (formato AAAA-MM-DD)
 
+- **BDPaciente** - representa um banco de pacientes com os seguintes campos:
+  - um **vetor dinâmico** de pacientes (`Paciente *pacientes`);
+  - `total`: quantidade atual de pacientes carregados;
+  - `capacidade`: tamanho atual do vetor alocado.
 
 ### Funcionalidades implementadas
-- Leitura do CSV: os dados do arquivo bd_pacientes.csv são carregados ao iniciar o sistema. Cada linha é convertida em uma struct Paciente e armazenada no vetor do TAD BDPaciente.
-- Impressão de pacientes: listar todos os pacientes cadastrados ou um paciente individual.
-- Consulta por prefixo: o usuário pode buscar pacientes pelo nome ou CPF. A busca considera prefixos (exemplo: "Mari" encontra "Maria Oliveira" e "Maria Madalena"). O sistema mostra os resultados e pergunta se o usuário deseja realizar outra busca.
-
+- **Leitura do CSV**: os dados do arquivo `bd_pacientes.csv` são carregados ao iniciar o sistema. Cada linha é convertida em uma struct `Paciente` e armazenada dinamicamente no vetor do TAD `BDPaciente`.
+- **Impressão de pacientes**: listar todos os pacientes cadastrados ou um paciente individual.
+- **Consulta por prefixo**: o usuário pode buscar pacientes pelo nome ou CPF. A busca considera prefixos (exemplo: "Mari" encontra "Maria Oliveira" e "Maria Madalena"). O sistema mostra os resultados e pergunta se o usuário deseja realizar outra busca.
 
 ### Decisões de implementação
-- O sistema foi estruturado para manter o main.c o mais limpo possível, delegando toda a lógica ao TAD BDPaciente;
-- Funções como bd_busca() abstraem a lógica de input, busca e impressão dos resultados;
-- Funções individuais para busca por nome ou CPF para facilitar a implementação de funcionalidades da próxima etapa (atualizar e remover paciente);
-- A função bd_criarPaciente() foi criada para centralizar a construção da struct Paciente, facilitando futuras inserções (Parte 2 do trabalho);
-- Alocação dinâmica na busca por nome e CPF (bd_buscaNome e bd_buscaCPF) para criar dinamicamente um vetor de resultados.
+- O sistema foi estruturado para manter o `main.c` o mais limpo possível, delegando toda a lógica ao TAD `BDPaciente`;
+- Funções como `bd_busca()` abstraem a lógica de input, busca e impressão dos resultados;
+- Funções individuais para busca por nome ou CPF foram criadas para facilitar a implementação de funcionalidades da próxima etapa (atualizar e remover paciente);
+- A função `bd_criarPaciente()` foi criada para centralizar a construção da struct `Paciente`, facilitando futuras inserções (Parte 2 do trabalho);
+- O vetor de pacientes em `BDPaciente` utiliza **alocação dinâmica** com `malloc` e `realloc`, permitindo que a estrutura cresça conforme novos dados são carregados;
+- As buscas (`bd_buscaNome` e `bd_buscaCPF`) também utilizam alocação dinâmica para gerar um vetor de índices com os resultados encontrados.
