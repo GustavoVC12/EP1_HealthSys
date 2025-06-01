@@ -185,7 +185,7 @@ void bd_imprimir_paciente(const Paciente *p){ // imprime um paciente específico
 void bd_imprimir_lista(const BDPaciente *bd){ // imprime a lista de pacientes
     clearConsole();
     printFrame();
-    printf("ID | CPF             | Nome                  | Idade | Data Cadastro\n");
+    printf("ID | CPF            | Nome                 | Idade | Data Cadastro\n");
     printf("---------------------------------------------------------------\n");
     for(int i = 0; i < bd->total; i++){
         Paciente p = bd->pacientes[i];
